@@ -110,7 +110,7 @@ pipeline {
                          helm ls -n "${BRANCH_NAMESPACE}"
                          echo 'Removing docker images to free space in dev environment'
                          docker rmi ${ECR_REGISTRY_ID}/${IMAGE_NAME}:${env.BUILD_NUMBER}_${env.BRANCH_NAME}
-                         docker rmi product_service:${env.BUILD_NUMBER}_${env.BRANCH_NAME}
+                       
                        
                         """
                  }
