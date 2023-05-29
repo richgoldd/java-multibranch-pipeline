@@ -4,6 +4,7 @@ metadata:
   name: myapp-service
   # namespace: "{{ .Values.app.namespace }}"
 spec:
+  type: NodePort
   selector:
     app: myapp
   ports:
