@@ -90,7 +90,11 @@ pipeline {
                   }
 
         stage('Deploy app to EKS') {
+                 options {
+                  timeout(time: 2, unit: 'MINUTES')
+                 }
                  steps {
+                   input "Approve to proceed production deployment"
                    withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS_CREDENTIALS_ID',
                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                      sh """
