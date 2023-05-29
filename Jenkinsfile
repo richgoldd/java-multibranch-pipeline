@@ -6,8 +6,7 @@ pipeline {
         AWS_DEFAULT_REGION = 'us-west-1'
         ECR_REGISTRY_ID = '634639955940.dkr.ecr.us-west-1.amazonaws.com'
         IMAGE_NAME = 'product_service'
-        BRANCH_NAMESPACE = "uat"
-        TEST = "TEST"
+        BRANCH_NAMESPACE = "prod"
         REPO = "https://github.com/richgoldd/app-java"
         GITHUB_TOKEN = credentials('GITHUB_TOKEN_TRIVY')
                }
@@ -62,7 +61,7 @@ pipeline {
         stage('Docker Image Build') {
             steps {
                 echo 'Bulding docker image...'
-                sh "docker build -t product_service:${env.BUILD_NUMBER} ."
+                sh "docker build -t product_service:${env.BUILD_NUMBER}_${env.BRANCH_NAME} ."
 
             }
         }        
@@ -71,7 +70,7 @@ pipeline {
           steps {
              echo 'Scanning docker image'
               // sh "trivy image --exit-code 1 --severity HIGH,CRITICAL product_service:${env.BUILD_NUMBER}"
-             sh "trivy image --severity HIGH,CRITICAL product_service:${env.BUILD_NUMBER}"
+             sh "trivy image --severity HIGH,CRITICAL product_service:${env.BUILD_NUMBER}_${env.BRANCH_NAME}"
           }
         }
 
@@ -82,8 +81,8 @@ pipeline {
 
                     sh """
                        aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY_ID}
-                       docker tag ${IMAGE_NAME}:${env.BUILD_NUMBER} ${ECR_REGISTRY_ID}/${IMAGE_NAME}:${env.BUILD_NUMBER}
-                       docker push ${ECR_REGISTRY_ID}/${IMAGE_NAME}:${env.BUILD_NUMBER}
+                       docker tag ${IMAGE_NAME}:${env.BUILD_NUMBER}_${env.BRANCH_NAME} ${ECR_REGISTRY_ID}/${IMAGE_NAME}:${env.BUILD_NUMBER}_${env.BRANCH_NAME}
+                       docker push ${ECR_REGISTRY_ID}/${IMAGE_NAME}:${env.BUILD_NUMBER}_${env.BRANCH_NAME}
                   
                       """
                      }
@@ -105,13 +104,13 @@ pipeline {
                 	       aws eks update-kubeconfig --name devopsthehardway-cluster --region us-west-1
                 	       echo "Validating the cluster"
                          kubectl config current-context
-                         echo "Deploying ${IMAGE_NAME} to ${params.NAMESPACE} environment"
-	                       helm upgrade --install java-app ./java-app  --set app.image="${ECR_REGISTRY_ID}/${IMAGE_NAME}:${env.BUILD_NUMBER}" --namespace="${BRANCH_NAMESPACE}"
+                         echo "Deploying ${IMAGE_NAME} to ${BRANCH_NAMESPACE} environment"
+	                       helm upgrade --install java-app ./java-app  --set app.image="${ECR_REGISTRY_ID}/${IMAGE_NAME}:${env.BUILD_NUMBER}_${env.BRANCH_NAME}" --namespace="${BRANCH_NAMESPACE}"
  			                   sleep 6s
-                         helm ls -n "${params.NAMESPACE}"
+                         helm ls -n "${BRANCH_NAMESPACE}"
                          echo 'Removing docker images to free space in dev environment'
-                         docker rmi ${ECR_REGISTRY_ID}/${IMAGE_NAME}:${env.BUILD_NUMBER} 
-                         docker rmi product_service:${env.BUILD_NUMBER}
+                         docker rmi ${ECR_REGISTRY_ID}/${IMAGE_NAME}:${env.BUILD_NUMBER}_${env.BRANCH_NAME}
+                         docker rmi product_service:${env.BUILD_NUMBER}_${env.BRANCH_NAME}
                        
                         """
                  }
