@@ -1,10 +1,4 @@
-
-FROM adoptopenjdk/openjdk11:alpine-jre
-
-ARG JAR_FILE=target/spring-boot-web.jar
-
-WORKDIR /opt/app
-
-COPY ${JAR_FILE} app.jar
-
-ENTRYPOINT ["java","-jar","app.jar"]
+FROM openjdk:11-jre
+VOLUME /tmp
+ADD target/springBootDocker-1.0.0.jar springBootDocker.jar
+ENTRYPOINT ["java","-jar","/springBootDocker.jar"]
