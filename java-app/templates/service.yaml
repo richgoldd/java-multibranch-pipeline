@@ -4,12 +4,12 @@ metadata:
   name: myapp-service
   # namespace: "{{ .Values.app.namespace }}"
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: myapp
   ports:
   - port: 8080
     protocol: TCP
     targetPort: 8080
-    NodePort: 30008
+   
 
