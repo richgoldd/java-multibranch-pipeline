@@ -1,4 +1,7 @@
-FROM openjdk:11-jre
-VOLUME /tmp
-ADD target/springBootDocker-1.0.0.jar springBootDocker.jar
-ENTRYPOINT ["java","-jar","/springBootDocker.jar"]
+FROM openjdk:11
+
+COPY target/spring-boot-docker-app.jar  /usr/app/
+
+WORKDIR /usr/app/
+
+ENTRYPOINT ["java", "-jar", "spring-boot-docker-app.jar"]
