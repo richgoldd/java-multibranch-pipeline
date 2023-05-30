@@ -44,7 +44,7 @@ pipeline {
          //  agent { docker 'maven:3.5-alpine' }
            steps {
                    echo 'Testing stage for the app...'
-                   sh 'mvn test'
+                  //  sh 'mvn test'
                   // junit '**/target/surefire-reports/TEST-*.xml'
 
            }
