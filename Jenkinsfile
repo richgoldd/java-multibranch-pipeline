@@ -45,7 +45,7 @@ pipeline {
            steps {
                    echo 'Testing stage for the app...'
                    sh 'mvn test'
-                   junit '**/target/surefire-reports/TEST-*.xml'
+                  // junit '**/target/surefire-reports/TEST-*.xml'
 
            }
         }
