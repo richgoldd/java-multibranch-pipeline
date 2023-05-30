@@ -1,7 +1,7 @@
 # Start with a base image containing Java runtime
 FROM openjdk:11
 
-WORKDIR /app
+WORKDIR /
 
 COPY target/*.jar spring-boot-docker-maven.jar
 
@@ -9,4 +9,4 @@ COPY target/*.jar spring-boot-docker-maven.jar
 EXPOSE 8080 
 
 # Run the jar file 
-ENTRYPOINT ["java","-jar","/app/spring-boot-docker-maven.jar"]
+ENTRYPOINT ["java","-jar","/spring-boot-docker-maven.jar"]
