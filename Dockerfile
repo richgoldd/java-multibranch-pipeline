@@ -1,10 +1,10 @@
-# Start with a base image containing Java runtime
-FROM openjdk:8-jdk-alpine
 
-COPY target/*.jar /app/
+FROM adoptopenjdk/openjdk11:alpine-jre
 
-# Make port 8080 available 
-EXPOSE 8080 
+ARG JAR_FILE=target/spring-boot-web.jar
 
-# Run the jar file 
-ENTRYPOINT ["java","-jar","/app/spring-boot-docker-maven.jar"]
+WORKDIR /opt/app
+
+COPY ${JAR_FILE} app.jar
+
+ENTRYPOINT ["java","-jar","app.jar"]
