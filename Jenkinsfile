@@ -6,7 +6,7 @@ pipeline {
         AWS_DEFAULT_REGION = 'us-west-1'
         ECR_REGISTRY_ID = '634639955940.dkr.ecr.us-west-1.amazonaws.com'
         IMAGE_NAME = 'product_service'
-        BRANCH_NAMESPACE = "uat"
+        BRANCH_NAMESPACE = "prod"
         REPO = "https://github.com/richgoldd/app-java"
         GITHUB_TOKEN = credentials('GITHUB_TOKEN_TRIVY')
                }
