@@ -6,7 +6,7 @@ pipeline {
         AWS_DEFAULT_REGION = 'us-west-1'
         ECR_REGISTRY_ID = '634639955940.dkr.ecr.us-west-1.amazonaws.com'
         IMAGE_NAME = 'product_service'
-        BRANCH_NAMESPACE = "staging"
+        BRANCH_NAMESPACE = "prod"
         REPO = "https://github.com/richgoldd/app-java"
         GITHUB_TOKEN = credentials('GITHUB_TOKEN_TRIVY')
                }
@@ -16,9 +16,13 @@ pipeline {
       jdk 'JDK11'
     }
 
-    stages {      
+    stages {     
+         options {
+                  timeout(time: 2, unit: 'DAYS')
+                 } 
         stage('Git Checkout') {
             steps { 
+                    input "Approve to proceed production deployment"
                     echo "Checking out code from github"
                     checkout scm
                  }
@@ -90,11 +94,7 @@ pipeline {
                   }
 
         stage('Deploy app to EKS') {
-                 options {
-                  timeout(time: 2, unit: 'MINUTES')
-                 }
                  steps {
-                   input "Approve to proceed production deployment"
                    withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS_CREDENTIALS_ID',
                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                      sh """
