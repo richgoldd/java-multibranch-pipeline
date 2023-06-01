@@ -17,10 +17,11 @@ pipeline {
     }
 
     stages {     
-         options {
+         
+        stage('Git Checkout') {
+            options {
                   timeout(time: 2, unit: 'DAYS')
                  } 
-        stage('Git Checkout') {
             steps { 
                     input "Approve to proceed production deployment"
                     echo "Checking out code from github"
