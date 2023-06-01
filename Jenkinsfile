@@ -6,7 +6,7 @@ pipeline {
         AWS_DEFAULT_REGION = 'us-west-1'
         ECR_REGISTRY_ID = '634639955940.dkr.ecr.us-west-1.amazonaws.com'
         IMAGE_NAME = 'product_service'
-        BRANCH_NAMESPACE = "prod"
+        BRANCH_NAMESPACE = "staging"
         REPO = "https://github.com/richgoldd/app-java"
         GITHUB_TOKEN = credentials('GITHUB_TOKEN_TRIVY')
                }
@@ -105,7 +105,7 @@ pipeline {
                 	       ls -la .kube
 	                       aws --version
         	               helm version
-                	       aws eks update-kubeconfig --name devopsthehardway-cluster --region us-west-1
+                	       aws eks update-kubeconfig --name richgold-demo-cluster --region us-west-1
                 	       echo "Validating the cluster"
                          kubectl config current-context
                          echo "Deploying ${IMAGE_NAME} to ${BRANCH_NAMESPACE} environment"
