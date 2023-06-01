@@ -103,7 +103,6 @@ pipeline {
         	               helm version
                 	       aws eks update-kubeconfig --name richgold-demo-cluster --region us-west-1
                 	       echo "Validating the cluster"
-                         kubectl config current-context
                          echo "Deploying ${IMAGE_NAME} to ${BRANCH_NAMESPACE} environment"
 	                       helm upgrade --install java-app ./java-app  --set app.image="${ECR_REGISTRY_ID}/${IMAGE_NAME}:${env.BUILD_NUMBER}_${env.BRANCH_NAME}" --namespace="${BRANCH_NAMESPACE}"
  			                   sleep 6s
