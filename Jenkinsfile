@@ -6,7 +6,6 @@ pipeline {
         AWS_DEFAULT_REGION = 'us-west-1'
         ECR_REGISTRY_ID = '634639955940.dkr.ecr.us-west-1.amazonaws.com'
         IMAGE_NAME = 'product_service'
-      //  DOCKERHUB_CREDENTIALS = credentials('dockerhub')
         BRANCH_NAMESPACE = "dev"
         REPO = "https://github.com/richgoldd/app-java"
         GITHUB_TOKEN = credentials('GITHUB_TOKEN_TRIVY')
